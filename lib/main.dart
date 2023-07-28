@@ -8,6 +8,9 @@ Future main() async {
   runApp(MyApp());
 }
 
+// GlobalKey를 생성합니다.
+final wordFetchStateKey = GlobalKey<_WordFetchStateState>();
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -19,9 +22,19 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(
           title: Text('Word of the Day'),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.refresh),
+              onPressed: () {
+                // GlobalKey를 통해 WordFetchState의 상태를 가져와 refreshWord 메서드를 호출합니다.
+                wordFetchStateKey.currentState!.refreshWord();
+              },
+            ),
+          ],
         ),
         body: Center(
-          child: WordFetchState(),
+          // WordFetchState 위젯에 GlobalKey를 할당합니다.
+          child: WordFetchState(key: wordFetchStateKey),
         ),
       ),
     );
@@ -42,6 +55,13 @@ class _WordFetchStateState extends State<WordFetchState> {
   void initState() {
     super.initState();
     _futureWord = fetchWord();
+  }
+
+  // 새로고침 기능을 위한 메서드를 추가합니다.
+  void refreshWord() {
+    setState(() {
+      _futureWord = fetchWord();
+    });
   }
 
   @override
