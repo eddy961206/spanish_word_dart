@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:spanish_word/word.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
@@ -7,7 +6,21 @@ class WordDisplay extends StatelessWidget {
   final Word word;
   final FlutterTts flutterTts = FlutterTts();
 
-  WordDisplay({super.key, required this.word});
+  WordDisplay({Key? key, required this.word}) : super(key: key);
+
+  Widget _buildText(String title, String? value, {double fontSize = 16, FontWeight fontWeight = FontWeight.normal}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          "$title: ${value ?? 'N/A'}",
+          style: TextStyle(fontSize: fontSize, fontWeight: fontWeight),
+        ),
+        SizedBox(height: 15),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -22,16 +35,8 @@ class WordDisplay extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
-                "주제 : ${word.mainTitle ?? 'N/A'}",
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.blueAccent),
-              ),
-              SizedBox(height: 15),
-              Text(
-                "소주제 : ${word.subTitle ?? 'N/A'}",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blueAccent),
-              ),
-              SizedBox(height: 15),
+              _buildText('주제', word.mainTitle, fontSize: 22, fontWeight: FontWeight.bold),
+              _buildText('소주제', word.subTitle, fontSize: 20, fontWeight: FontWeight.bold),
               Text(
                 word.spanishWord ?? 'N/A',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -43,25 +48,8 @@ class WordDisplay extends StatelessWidget {
                   await flutterTts.speak(word.spanishWord ?? '');
                 },
               ),
-              SizedBox(height: 15),
-              Text(
-                "영단어 : ${word.englishWord ?? 'N/A'}",
-                style: TextStyle(fontSize: 16),
-              ),
-              SizedBox(height: 15),
-              Text(
-                "한국어 : ${word.koreanWord ?? 'N/A'}",
-                style: TextStyle(fontSize: 16),
-              ),
-              // CachedNetworkImage(
-              //   imageUrl: word.imageUrl,
-              //   placeholder: (context, url) => CircularProgressIndicator(),
-              //   errorWidget: (context, url, error) => Icon(Icons.error),
-              // ),
-              // SizedBox(height: 10),
-              // Text(word.exampleSentence),
-              // SizedBox(height: 10),
-              // Text(word.sentenceTranslation),
+              _buildText('영단어', word.englishWord),
+              _buildText('한국어', word.koreanWord),
             ],
           ),
         ),

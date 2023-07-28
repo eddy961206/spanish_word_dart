@@ -28,9 +28,6 @@ Future<Word> fetchWord() async {
   }
 }
 
-
-
-
 class Word {
   final String mainTitle;
   final String? subTitle;
