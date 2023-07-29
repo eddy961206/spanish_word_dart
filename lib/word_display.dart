@@ -1,12 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:spanish_word/word.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:http/http.dart' as http;
 
 class WordDisplay extends StatelessWidget {
   final Word word;
   final FlutterTts flutterTts = FlutterTts();
 
   WordDisplay({Key? key, required this.word}) : super(key: key);
+
+  Future<void> checkWord() async {
+    final response = await http.post(
+      Uri.parse('http://localhost:8080/check-word'),
+      body: {'wordId': word.wordId.toString()},
+    );
+
+    if (response.statusCode == 200) {
+      print('단어가 성공적으로 체크되었습니다');
+    } else {
+      print('단어 체크에 실패했습니다');
+    }
+  }
 
   Widget _buildText(String title, String? value, {double fontSize = 16, FontWeight fontWeight = FontWeight.normal}) {
     return Column(
@@ -50,6 +64,10 @@ class WordDisplay extends StatelessWidget {
               ),
               _buildText('영단어', word.englishWord),
               _buildText('한국어', word.koreanWord),
+              IconButton(
+                icon: Icon(Icons.check),
+                onPressed: checkWord,
+              ),
             ],
           ),
         ),

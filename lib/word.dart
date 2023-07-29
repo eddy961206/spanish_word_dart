@@ -29,25 +29,30 @@ Future<Word> fetchWord() async {
 }
 
 class Word {
+  final int wordId;
   final String mainTitle;
   final String? subTitle;
   final String spanishWord;
   final String? koreanWord;
   final String englishWord;
+  final int isChecked;
   // final String imageUrl;
   // final String exampleSentence;
   // final String sentenceTranslation;
 
   // Word({this.spanish, this.korean, this.english, this.imageUrl, this.exampleSentence, this.sentenceTranslation});
-  Word({required this.mainTitle, this.subTitle, required this.spanishWord, this.koreanWord, required this.englishWord});
+  Word({required this.wordId, required this.mainTitle, this.subTitle,
+    required this.spanishWord, this.koreanWord, required this.englishWord, required this.isChecked});
 
   factory Word.fromJson(Map<String, dynamic> json) {
     return Word(
+      wordId: json['word_id'],
       mainTitle: json['main_title'],
       subTitle: json['sub_title'] as String?,
       spanishWord: json['spanish_word'],
       koreanWord: json['korean_word'] as String?,
       englishWord: json['english_word'],
+      isChecked: json['is_checked'],
       // imageUrl: json['imageUrl'],
       // exampleSentence: json['exampleSentence'],
       // sentenceTranslation: json['sentenceTranslation'],
@@ -56,6 +61,7 @@ class Word {
 
   @override
   String toString() {
-    return 'Word: {mainTitle: $mainTitle, subTitle: $subTitle, spanishWord: $spanishWord, koreanWord: $koreanWord, englishWord: $englishWord}';
+    return 'Word: {wordId: $wordId, mainTitle: $mainTitle, subTitle: $subTitle, '
+        'spanishWord: $spanishWord, koreanWord: $koreanWord, englishWord: $englishWord, isChecked: $isChecked}';
   }
 }
