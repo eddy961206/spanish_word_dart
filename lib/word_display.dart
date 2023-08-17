@@ -11,7 +11,7 @@ class WordDisplay extends StatelessWidget {
 
   Future<void> checkWord() async {
     final response = await http.post(
-      Uri.parse('http://localhost:8080/check-word'),
+      Uri.parse('http://192.168.219.101:8080/check-word'),
       body: {'wordId': word.wordId.toString()},
     );
 

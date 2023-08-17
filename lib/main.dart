@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:spanish_word/word.dart';
 import 'package:spanish_word/word_display.dart';
 
+import 'checked_word_page.dart';
+
 Future main() async {
   runApp(MyApp());
 }
@@ -10,14 +12,40 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Word of the Day',
+      title: '스페인 단어장',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Word of the Day'),
+          title: Text('스페인 단어장'),
         ),
+        drawer: Drawer(
+          child: Builder(
+            builder: (BuildContext context) {
+              return ListView(
+                padding: EdgeInsets.zero,
+                children: <Widget>[
+                  DrawerHeader(
+                    child: Text('메뉴'),
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                    ),
+                  ),
+                  ListTile(
+                    title: Text('저장된 단어목록'),
+                    onTap: () {
+                      Navigator.of(context).pop(); // 메뉴를 닫습니다.
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => CheckedWordPage()));
+                    },
+                  ),
+                  // 다른 메뉴 아이템들을 이곳에 추가할 수 있습니다.
+                ],
+              );
+            },
+          ),
+        ),
+
         body: Center(
           child: WordFetchState(),
         ),

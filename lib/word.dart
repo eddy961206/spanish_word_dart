@@ -6,7 +6,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Future<Word> fetchWord() async {
   final response = await http.get(
-    Uri.parse('http://localhost:8080/random-word'), // Spring Boot API URL
+    Uri.parse('http://192.168.219.101:8080/random-word'), // Spring Boot API URL
   );
   if (response.statusCode == 200) {
     // If the server returns a 200 OK response, parse the JSON.
@@ -46,13 +46,13 @@ class Word {
 
   factory Word.fromJson(Map<String, dynamic> json) {
     return Word(
-      wordId: json['word_id'],
-      mainTitle: json['main_title'],
-      subTitle: json['sub_title'] as String?,
-      spanishWord: json['spanish_word'],
-      koreanWord: json['korean_word'] as String?,
-      englishWord: json['english_word'],
-      isChecked: json['is_checked'],
+      wordId: json['wordId'],
+      mainTitle: json['mainTitle'],
+      subTitle: json['subTitle'] as String?,
+      spanishWord: json['spanishWord'],
+      koreanWord: json['koreanWord'] as String?,
+      englishWord: json['englishWord'],
+      isChecked: json['isChecked'],
       // imageUrl: json['imageUrl'],
       // exampleSentence: json['exampleSentence'],
       // sentenceTranslation: json['sentenceTranslation'],
