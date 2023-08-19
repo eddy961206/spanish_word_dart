@@ -7,6 +7,7 @@ import 'checked_word_page.dart';
 Future main() async {
   runApp(MyApp());
 }
+// const String apiEndpoint = 'http://192.168.219.104:8080';
 
 class MyApp extends StatelessWidget {
   @override

@@ -17,7 +17,7 @@ class _CheckedWordPageState extends State<CheckedWordPage> {
   }
 
   _getCheckedWords() async {
-    final response = await http.get(Uri.parse('http://192.168.219.101:8080/checked-word'));
+    final response = await http.get(Uri.parse('http://192.168.219.104:8080/checked-word'));
     if (response.statusCode == 200) {
       final List parsedList = json.decode(response.body);
       setState(() {
@@ -35,21 +35,49 @@ class _CheckedWordPageState extends State<CheckedWordPage> {
       appBar: AppBar(
         title: Text('저장된 단어목록'),
       ),
-      body: ListView.builder(
-        itemCount: words.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween, // 항목 간에 공간을 균등하게 분배
+      body: Column(
+        children: [
+          // 헤더 부분
+          Container(
+            color: Colors.grey[300], // 헤더 배경색
+            padding: EdgeInsets.symmetric(vertical: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(words[index]['spanishWord']), // 스페인어 단어
-                Text(words[index]['englishWord']), // 영어 단어
-                Text(words[index]['koreanWord']),  // 한국어 단어
+                Expanded(child: Text('스페인어', textAlign: TextAlign.center)), // 헤더 제목
+                Expanded(child: Text('영어', textAlign: TextAlign.center)),     // 헤더 제목
+                Expanded(child: Text('한국어', textAlign: TextAlign.center)),   // 헤더 제목
               ],
             ),
-          );
-        },
+          ),
+          // 단어 목록 부분
+          Expanded(
+            child: ListView.separated(
+              itemCount: words.length,
+              separatorBuilder: (context, index) => Divider(
+                thickness: 2.0, // 구분선의 두께 변경
+                color: Colors.grey, // 구분선의 색상 변경
+              ), // 구분선
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(child: Text(words[index]['spanishWord'], textAlign: TextAlign.center)), // 스페인어 단어
+                      Expanded(child: Text(words[index]['englishWord'], textAlign: TextAlign.center)), // 영어 단어
+                      Expanded(child: Text(words[index]['koreanWord'], textAlign: TextAlign.center)),  // 한국어 단어
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
+
+
+
+
 }

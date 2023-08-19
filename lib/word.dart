@@ -6,7 +6,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Future<Word> fetchWord() async {
   final response = await http.get(
-    Uri.parse('http://192.168.219.101:8080/random-word'), // Spring Boot API URL
+    Uri.parse('http://192.168.219.104:8080/random-word'), // Spring Boot API URL
   );
   if (response.statusCode == 200) {
     // If the server returns a 200 OK response, parse the JSON.
