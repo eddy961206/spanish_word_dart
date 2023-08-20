@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+// 저장된 단어 목록 보여주는 페이지
 class CheckedWordPage extends StatefulWidget {
   @override
   _CheckedWordPageState createState() => _CheckedWordPageState();
@@ -13,9 +14,10 @@ class _CheckedWordPageState extends State<CheckedWordPage> {
   @override
   void initState() {
     super.initState();
-    _getCheckedWords();
+    _getCheckedWords(); // 저장된 단어들 가져오기
   }
 
+  // 서버에서 저장된 단어들 가져오는 메소드
   _getCheckedWords() async {
     final response = await http.get(Uri.parse('http://192.168.219.104:8080/checked-word'));
     if (response.statusCode == 200) {

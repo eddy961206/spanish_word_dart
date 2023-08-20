@@ -1,104 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:spanish_word/word.dart';
-import 'package:spanish_word/word_display.dart';
+import 'myHomePage.dart';
 
-import 'checked_word_page.dart';
 
-Future main() async {
-  runApp(MyApp());
-}
+// 플러터 앱의 시작점입니다.
+// MyApp 위젯을 루트로 하는 플러터 앱을 실행합니다.
+// Future main() async {
+//   runApp(MyApp());
+// }  //  꼭 이렇게 main 함수에 비동기처리 안해도. 어차피 내부 위젯에서 비동기 처리해야
+
+void main() => runApp(MyApp());
+
 // const String apiEndpoint = 'http://192.168.219.104:8080';
 
+// MyApp은 플러터 앱의 루트 위젯입니다.
+// MaterialApp 위젯을 사용하여 기본 테마와 홈페이지를 설정합니다.
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: '스페인 단어장',
-      theme: ThemeData(
+      title: '스페인 단어장', // 앱 타이틀 설정
+      theme: ThemeData(     // 기본 테마 색상 설정
         primarySwatch: Colors.blue,
       ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('스페인 단어장'),
-        ),
-        drawer: Drawer(
-          child: Builder(
-            builder: (BuildContext context) {
-              return ListView(
-                padding: EdgeInsets.zero,
-                children: <Widget>[
-                  DrawerHeader(
-                    child: Text('메뉴'),
-                    decoration: BoxDecoration(
-                      color: Colors.blue,
-                    ),
-                  ),
-                  ListTile(
-                    title: Text('저장된 단어목록'),
-                    onTap: () {
-                      Navigator.of(context).pop(); // 메뉴를 닫습니다.
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => CheckedWordPage()));
-                    },
-                  ),
-                  // 다른 메뉴 아이템들을 이곳에 추가할 수 있습니다.
-                ],
-              );
-            },
-          ),
-        ),
-
-        body: Center(
-          child: WordFetchState(),
-        ),
-      ),
+      home: MyHomePage(),
     );
   }
 }
 
-class WordFetchState extends StatefulWidget {
-  WordFetchState({Key? key}) : super(key: key);
 
-  @override
-  _WordFetchStateState createState() => _WordFetchStateState();
-}
-
-class _WordFetchStateState extends State<WordFetchState> {
-  late Future<Word> _futureWord;
-
-  @override
-  void initState() {
-    super.initState();
-    _futureWord = fetchWord();
-  }
-
-  void refreshWord() {
-    setState(() {
-      _futureWord = fetchWord();
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Expanded(
-          child: FutureBuilder<Word>(
-            future: _futureWord,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return WordDisplay(word: snapshot.data!);
-              } else if (snapshot.hasError) {
-                return Text("${snapshot.error}");
-              }
-              return CircularProgressIndicator();
-            },
-          ),
-        ),
-        FloatingActionButton(
-          onPressed: refreshWord,
-          child: Icon(Icons.refresh),
-        ),
-      ],
-    );
-  }
-}

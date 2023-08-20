@@ -3,31 +3,31 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 
-
+// 서버에서 랜덤 단어 가져오기
 Future<Word> fetchWord() async {
   final response = await http.get(
-    Uri.parse('http://192.168.219.104:8080/random-word'), // Spring Boot API URL
+    Uri.parse('http://192.168.219.104:8080/random-word'),
   );
   if (response.statusCode == 200) {
-    // If the server returns a 200 OK response, parse the JSON.
+    // 서버에서 정상 response면 JSON decoding
     Map<String, dynamic> json = jsonDecode(utf8.decode(response.bodyBytes));
     print('받아온 JSON: $json');
     try {
-      // Create a Word object from the JSON.
+      // JSON을 Word 객체로 변환
       Word word = Word.fromJson(json);
-      print('$word');
-      // Return the Word object.
-      return word;
+      print('JSON을 변환한 word객체 : $word');
+      return word;  // Word 객체 리턴
     } catch (e) {
       print('JSON을 Word객체로 변환하지 못했습니다 : $e');
       throw Exception('단어를 JSON으로 변환하지 못했습니다..');
     }
   } else {
-    // If the server did not return a 200 OK response, then throw an exception.
+    // response가 200이 아니면 에러 처리
     throw Exception('서버로부터 단어를 가져오지 못했습니다..');
   }
 }
 
+// Word 클래스 - 서버 응답 JSON을 객체로 매핑
 class Word {
   final int wordId;
   final String mainTitle;
